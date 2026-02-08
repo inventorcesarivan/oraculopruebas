@@ -492,22 +492,34 @@ body *{
 
 
 @media (max-width: 768px){
-  body{
+  html, body{
+    margin:0;
+    padding:0;
+    height:100%;
     overflow:hidden;
   }
-  .main{
-    display:flex;
-    flex-direction:row;
-    width:300vw;
-    transition:transform .5s ease-in-out;
+
+  .wrapper{
+    max-width:none;
+    padding:0;
+    height:100%;
+    overflow:hidden;
   }
+
+  .main{
+    display:flex !important;
+    flex-direction:row !important;
+    width:300vw !important;
+    height:100vh;
+    transform:translateX(0);
+    transition:transform .45s ease-in-out;
+  }
+
   .panel{
-    width:100vw;
-    min-height:100vh;
+    width:100vw !important;
+    min-height:100vh !important;
     flex-shrink:0;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
+    border-radius:0;
   }
 }
 
@@ -1615,7 +1627,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const main = document.querySelector('.main');
 
-  // orden de pasos: centro → izquierda → derecha → centro(resultado)
+  // pasos: centro → izquierda → derecha → centro(resultado)
   const steps = [1, 0, 2, 1];
   let step = 0;
 
@@ -1623,21 +1635,20 @@ document.addEventListener("DOMContentLoaded", () => {
     main.style.transform = `translateX(-${steps[i] * 100}vw)`;
   }
 
-  // inicio: panel central
+  // inicio forzado en panel central
   goStep(step);
 
-  // API pública
   window.nextStep = function(){
     if(step < steps.length - 1){
       step++;
       goStep(step);
     }
-  }
+  };
 
   window.resetToCenter = function(){
     step = 0;
     goStep(step);
-  }
+  };
 });
 </script>
 
