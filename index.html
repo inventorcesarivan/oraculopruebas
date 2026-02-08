@@ -476,22 +476,7 @@ body *{
 }
 
 
-.donation-btn-box{
-  background:#ffffff;
-  border-radius:14px;
-  padding:10px 16px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:transform .2s ease, box-shadow .2s ease;
-}
-.donation-btn-box:hover{
-  transform:translateY(-2px);
-  box-shadow:0 6px 18px rgba(0,0,0,0.35);
-}
-
-
-@media (max-width: 768px){
+@media (max-width:768px){
   html, body{
     margin:0;
     padding:0;
@@ -509,15 +494,15 @@ body *{
   .main{
     display:flex !important;
     flex-direction:row !important;
-    width:300vw !important;
+    grid-template-columns:none !important;
+    width:300vw;
     height:100vh;
-    transform:translateX(0);
     transition:transform .45s ease-in-out;
   }
 
   .panel{
-    width:100vw !important;
-    min-height:100vh !important;
+    width:100vw;
+    height:100vh;
     flex-shrink:0;
     border-radius:0;
   }
@@ -1058,10 +1043,10 @@ menuPanel.onclick=()=>{
   </div>
   <div class="donation-buttons">
     <a href="https://www.paypal.com/ncp/payment/PTRWET3UWGEY8" target="_blank">
-      <img src="paypal.png" alt="PayPal">
+      <img src="logo paypal ok.png" alt="PayPal">
     </a>
     <a href="https://link.mercadopago.com.ar/ajetrez" target="_blank">
-      <img src="mercadopago.jpg" alt="MercadoPago">
+      <img src="logo mercadopago ok.jpg" alt="MercadoPago">
     </a>
   </div>
 </div>
@@ -1496,10 +1481,10 @@ menuPanel.onclick=()=>{
 
     <div style="display:flex;justify-content:center;gap:28px;margin-top:26px;">
       <a href="https://www.paypal.com/ncp/payment/PTRWET3UWGEY8" target="_blank">
-        <img src="paypal.png" alt="PayPal" style="height:54px;cursor:pointer;">
+        <img src="logo paypal ok.png" alt="PayPal" style="height:54px;cursor:pointer;">
       </a>
       <a href="https://link.mercadopago.com.ar/ajetrez" target="_blank">
-        <img src="mercadopago.jpg" alt="MercadoPago" style="height:54px;cursor:pointer;">
+        <img src="logo mercadopago ok.jpg" alt="MercadoPago" style="height:54px;cursor:pointer;">
       </a>
     </div>
   </div>
@@ -1627,27 +1612,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const main = document.querySelector('.main');
 
-  // pasos: centro → izquierda → derecha → centro(resultado)
+  // pasos: centro → izquierda → derecha → centro (resultado)
   const steps = [1, 0, 2, 1];
   let step = 0;
 
-  function goStep(i){
-    main.style.transform = `translateX(-${steps[i] * 100}vw)`;
+  function goStep(){
+    if(step >= steps.length) return;
+    main.style.transform = `translateX(-${steps[step] * 100}vw)`;
+    step++;
   }
 
   // inicio forzado en panel central
-  goStep(step);
+  main.style.transform = `translateX(-${steps[0] * 100}vw)`;
+  step = 1;
 
-  window.nextStep = function(){
-    if(step < steps.length - 1){
-      step++;
-      goStep(step);
-    }
-  };
-
+  // API pública
+  window.nextStep = goStep;
   window.resetToCenter = function(){
-    step = 0;
-    goStep(step);
+    step = 1;
+    main.style.transform = `translateX(-${steps[0] * 100}vw)`;
   };
 });
 </script>
