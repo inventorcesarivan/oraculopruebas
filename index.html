@@ -505,6 +505,29 @@ body *{
   }
 }
 
+
+@media (max-width: 768px){
+  html, body{
+    height:100%;
+    overflow-y:auto;
+    scroll-snap-type:y mandatory;
+  }
+
+  .main{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+  }
+
+  .panel{
+    min-height:100vh;
+    scroll-snap-align:start;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+}
+
 </style>
 
 <style>
@@ -1626,6 +1649,30 @@ document.addEventListener("DOMContentLoaded", () => {
       goStep(step);
     }
   }
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  if(window.innerWidth > 768) return;
+
+  const panels = document.querySelectorAll('.panel');
+
+  // Orden visual móvil:
+  // 0 = panel central (bienvenida)
+  // 1 = panel izquierdo (consulta)
+  // 2 = panel derecho (resultado / interpretación)
+
+  function scrollToPanel(index){
+    panels[index].scrollIntoView({behavior:'smooth'});
+  }
+
+  // Exponer helpers globales
+  window.goToConsultaPanel = () => scrollToPanel(1);
+  window.goToResultadoPanel = () => scrollToPanel(2);
+  window.goBackToCentro = () => scrollToPanel(0);
+
 });
 </script>
 
