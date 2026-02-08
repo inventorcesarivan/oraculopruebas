@@ -490,6 +490,21 @@ body *{
   box-shadow:0 6px 18px rgba(0,0,0,0.35);
 }
 
+
+@media (max-width: 768px){
+  .main{
+    display:flex;
+    flex-direction:row;
+    width:300vw;
+    transition:transform .5s ease;
+  }
+  .panel{
+    width:100vw;
+    min-height:auto;
+    flex-shrink:0;
+  }
+}
+
 </style>
 
 <style>
@@ -1585,6 +1600,33 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 })();
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  if(window.innerWidth > 768) return;
+
+  const main = document.querySelector('.main');
+
+  // Order: center -> left -> right -> center
+  const flow = [1, 0, 2, 1];
+  let step = 0;
+
+  function goStep(i){
+    main.style.transform = `translateX(-${flow[i] * 100}vw)`;
+  }
+
+  // start on center panel
+  goStep(step);
+
+  window.nextMobilePanel = function(){
+    if(step < flow.length - 1){
+      step++;
+      goStep(step);
+    }
+  }
+});
 </script>
 
 </body>
