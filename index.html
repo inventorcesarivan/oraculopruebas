@@ -492,36 +492,19 @@ body *{
 
 
 @media (max-width: 768px){
+  body{
+    overflow:hidden;
+  }
   .main{
     display:flex;
     flex-direction:row;
     width:300vw;
-    transition:transform .5s ease;
+    transition:transform .5s ease-in-out;
   }
   .panel{
     width:100vw;
-    min-height:auto;
-    flex-shrink:0;
-  }
-}
-
-
-@media (max-width: 768px){
-  html, body{
-    height:100%;
-    overflow-y:auto;
-    scroll-snap-type:y mandatory;
-  }
-
-  .main{
-    display:flex;
-    flex-direction:column;
-    width:100%;
-  }
-
-  .panel{
     min-height:100vh;
-    scroll-snap-align:start;
+    flex-shrink:0;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -1632,47 +1615,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const main = document.querySelector('.main');
 
-  // Order: center -> left -> right -> center
-  const flow = [1, 0, 2, 1];
+  // orden de pasos: centro → izquierda → derecha → centro(resultado)
+  const steps = [1, 0, 2, 1];
   let step = 0;
 
   function goStep(i){
-    main.style.transform = `translateX(-${flow[i] * 100}vw)`;
+    main.style.transform = `translateX(-${steps[i] * 100}vw)`;
   }
 
-  // start on center panel
+  // inicio: panel central
   goStep(step);
 
-  window.nextMobilePanel = function(){
-    if(step < flow.length - 1){
+  // API pública
+  window.nextStep = function(){
+    if(step < steps.length - 1){
       step++;
       goStep(step);
     }
   }
-});
-</script>
 
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  if(window.innerWidth > 768) return;
-
-  const panels = document.querySelectorAll('.panel');
-
-  // Orden visual móvil:
-  // 0 = panel central (bienvenida)
-  // 1 = panel izquierdo (consulta)
-  // 2 = panel derecho (resultado / interpretación)
-
-  function scrollToPanel(index){
-    panels[index].scrollIntoView({behavior:'smooth'});
+  window.resetToCenter = function(){
+    step = 0;
+    goStep(step);
   }
-
-  // Exponer helpers globales
-  window.goToConsultaPanel = () => scrollToPanel(1);
-  window.goToResultadoPanel = () => scrollToPanel(2);
-  window.goBackToCentro = () => scrollToPanel(0);
-
 });
 </script>
 
