@@ -476,36 +476,18 @@ body *{
 }
 
 
-@media (max-width:768px){
-  html, body{
-    margin:0;
-    padding:0;
-    height:100%;
-    overflow:hidden;
-  }
-
-  .wrapper{
-    max-width:none;
-    padding:0;
-    height:100%;
-    overflow:hidden;
-  }
-
-  .main{
-    display:flex !important;
-    flex-direction:row !important;
-    grid-template-columns:none !important;
-    width:300vw;
-    height:100vh;
-    transition:transform .45s ease-in-out;
-  }
-
-  .panel{
-    width:100vw;
-    height:100vh;
-    flex-shrink:0;
-    border-radius:0;
-  }
+.donation-btn-box{
+  background:#ffffff;
+  border-radius:14px;
+  padding:10px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.donation-btn-box:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(0,0,0,0.35);
 }
 
 </style>
@@ -563,6 +545,23 @@ body *{
 /* ===== HEADER POSITION ADJUST ===== */
 .header{
   transform: translateY(-18px);
+}
+</style>
+
+
+<style>
+/* ===== MÓVIL: ORÁCULO EN COLUMNA (orden personalizado) ===== */
+@media (max-width: 768px) {
+  .main {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* orden: izquierdo → derecho → central */
+  .main .panel:nth-child(1) { order: 1; }
+  .main .panel:nth-child(3) { order: 2; }
+  .main .panel:nth-child(2) { order: 3; }
 }
 </style>
 
@@ -1043,10 +1042,10 @@ menuPanel.onclick=()=>{
   </div>
   <div class="donation-buttons">
     <a href="https://www.paypal.com/ncp/payment/PTRWET3UWGEY8" target="_blank">
-      <img src="logo paypal ok.png" alt="PayPal">
+      <img src="paypal.png" alt="PayPal">
     </a>
     <a href="https://link.mercadopago.com.ar/ajetrez" target="_blank">
-      <img src="logo mercadopago ok.jpg" alt="MercadoPago">
+      <img src="mercadopago.jpg" alt="MercadoPago">
     </a>
   </div>
 </div>
@@ -1481,10 +1480,10 @@ menuPanel.onclick=()=>{
 
     <div style="display:flex;justify-content:center;gap:28px;margin-top:26px;">
       <a href="https://www.paypal.com/ncp/payment/PTRWET3UWGEY8" target="_blank">
-        <img src="logo paypal ok.png" alt="PayPal" style="height:54px;cursor:pointer;">
+        <img src="paypal.png" alt="PayPal" style="height:54px;cursor:pointer;">
       </a>
       <a href="https://link.mercadopago.com.ar/ajetrez" target="_blank">
-        <img src="logo mercadopago ok.jpg" alt="MercadoPago" style="height:54px;cursor:pointer;">
+        <img src="mercadopago.jpg" alt="MercadoPago" style="height:54px;cursor:pointer;">
       </a>
     </div>
   </div>
@@ -1606,34 +1605,48 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  if(window.innerWidth > 768) return;
+<!-- ===== MOBILE BLOCKER OVERLAY (CSS ONLY) ===== -->
+<div id="mobile-blocker">
+  <div class="mobile-box">
+    <h2>Versión móvil en desarrollo</h2>
+    <p>
+      El oráculo del I Ching aún no está disponible para dispositivos móviles.<br>
+      Estamos trabajando para ofrecerte la mejor experiencia posible.
+    </p>
+    <p class="soon">Próximamente disponible ✨</p>
+  </div>
+</div>
 
-  const main = document.querySelector('.main');
+<style>
+#mobile-blocker{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999999;
+}
+#mobile-blocker .mobile-box{
+  background:#ffffff;
+  color:#000000 !important;
+  max-width:90%;
+  padding:28px 24px;
+  border-radius:18px;
+  text-align:center;
+  box-shadow:0 30px 60px rgba(0,0,0,0.7);
+}
+#mobile-blocker h2{margin:0 0 14px;font-size:22px;}
+#mobile-blocker p{font-size:15px;line-height:1.5;}
+#mobile-blocker .soon{margin-top:14px;font-weight:700;}
 
-  // pasos: centro → izquierda → derecha → centro (resultado)
-  const steps = [1, 0, 2, 1];
-  let step = 0;
-
-  function goStep(){
-    if(step >= steps.length) return;
-    main.style.transform = `translateX(-${steps[step] * 100}vw)`;
-    step++;
-  }
-
-  // inicio forzado en panel central
-  main.style.transform = `translateX(-${steps[0] * 100}vw)`;
-  step = 1;
-
-  // API pública
-  window.nextStep = goStep;
-  window.resetToCenter = function(){
-    step = 1;
-    main.style.transform = `translateX(-${steps[0] * 100}vw)`;
-  };
-});
-</script>
+/* 🔒 MOBILE ONLY BLOCK */
+@media (max-width: 768px){
+  #mobile-blocker{display:flex;}
+  body{overflow:hidden;}
+}
+</style>
+<!-- ===== END MOBILE BLOCKER ===== -->
 
 </body>
 
