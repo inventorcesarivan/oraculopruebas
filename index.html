@@ -551,6 +551,22 @@ body *{
 </head>
 
 <body>
+
+<div id="mobile-reduced-banner" style="
+  display:none;
+  position:fixed;
+  top:0;left:0;right:0;
+  background:#ffffff;
+  color:#000000;
+  z-index:9999;
+  padding:10px 14px;
+  text-align:center;
+  font-size:14px;
+  border-bottom:1px solid #ddd;
+">
+  Estás usando la <strong>versión móvil reducida</strong>. Algunas funciones avanzadas están deshabilitadas.
+</div>
+
 <div class="wrapper">
   
 <div class="header" style="display:flex;align-items:center;justify-content:center;gap:18px;">
@@ -1625,14 +1641,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* 🔒 MOBILE ONLY BLOCK */
 @media (max-width: 768px){
-  #mobile-blocker{
-    display:flex !important;
-    background:#ffffff !important;
-    color:#000000 !important;
-  }
-  body{
-    overflow:hidden;
-  }
+  #mobile-blocker{display:none !important;}
 }
 <!-- ===== END MOBILE BLOCKER ===== -->
 
@@ -1720,6 +1729,43 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }catch(e){}
     }
+  }
+})();
+</script>
+
+
+<script>
+/* ===== MOBILE REDUCED MODE ===== */
+(function(){
+  function isMobile(){
+    return window.matchMedia('(max-width: 768px)').matches;
+  }
+
+  function enableMobileReduced(){
+    const banner = document.getElementById('mobile-reduced-banner');
+    if(banner) banner.style.display = 'block';
+
+    // Force simple mode
+    if(window.simpleBtn && window.ritualBtn){
+      simpleBtn.click();
+      ritualBtn.style.display = 'none';
+    }
+
+    // Disable ritual-specific UI
+    const coins = document.getElementById('coins');
+    const throwBtn = document.getElementById('throw');
+    if(coins) coins.style.display = 'none';
+    if(throwBtn) throwBtn.style.display = 'none';
+
+    // Allow consultation but simplify flow
+    const question = document.getElementById('question');
+    const startBtn = document.getElementById('startBtn');
+    if(question) question.placeholder = 'Escribí tu consulta (versión móvil reducida)';
+    if(startBtn) startBtn.style.display = 'block';
+  }
+
+  if(isMobile()){
+    window.addEventListener('load', enableMobileReduced);
   }
 })();
 </script>
