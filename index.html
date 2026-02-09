@@ -548,23 +548,6 @@ body *{
 }
 </style>
 
-
-<style>
-/* ===== MÓVIL: ORÁCULO EN COLUMNA (orden personalizado) ===== */
-@media (max-width: 768px) {
-  .main {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  /* orden: izquierdo → derecho → central */
-  .main .panel:nth-child(1) { order: 1; }
-  .main .panel:nth-child(3) { order: 2; }
-  .main .panel:nth-child(2) { order: 3; }
-}
-</style>
-
 </head>
 
 <body>
@@ -1642,11 +1625,104 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* 🔒 MOBILE ONLY BLOCK */
 @media (max-width: 768px){
-  #mobile-blocker{display:flex;}
-  body{overflow:hidden;}
+  #mobile-blocker{
+    display:flex !important;
+    background:#ffffff !important;
+    color:#000000 !important;
+  }
+  body{
+    overflow:hidden;
+  }
 }
-</style>
 <!-- ===== END MOBILE BLOCKER ===== -->
+
+
+<script>
+
+// ===== FIX: Bind description to resolved hexagram =====
+(function(){
+  const _render = window.render;
+  if(typeof _render === 'function'){
+    window.render = function(res){
+      _render(res);
+      try{
+        const hexDesc = document.getElementById('hexDesc');
+        const hexTitle = document.getElementById('hexTitle');
+        const hexChar  = document.getElementById('hexChar');
+        if(res && res.base){
+          if(hexChar)  hexChar.textContent  = res.base.char || '';
+          if(hexTitle) hexTitle.textContent = res.base.name || '';
+          if(hexDesc)  hexDesc.textContent  = res.base.desc || '';
+        }
+      }catch(e){}
+    }
+  }
+})();
+
+</script>
+
+<script>
+
+// ===== LONG DESCRIPTION FOR FINAL RESULT =====
+(function(){
+  function buildLongDesc(base){
+    if(!base) return '';
+    return (
+      "Este hexagrama describe el clima general de la situación que estás atravesando. " +
+      "Habla de un momento donde las fuerzas internas y externas están interactuando de forma significativa. " +
+      "El símbolo de \"" + (base.name||"") + "\" señala una etapa que pide conciencia, lectura fina del contexto y coherencia interior. " +
+      "No indica una acción inmediata impulsiva, sino la necesidad de observar con atención los movimientos en curso, " +
+      "reconociendo qué aspectos dependen de vos y cuáles requieren espera. " +
+      "La claridad aparece cuando respetás el ritmo natural de los acontecimientos y evitás forzar resultados. " +
+      "Comprender este movimiento te permitirá actuar con mayor sabiduría, alineando intención y acción en el momento adecuado."
+    );
+  }
+
+  const _render2 = window.render;
+  if(typeof _render2 === 'function'){
+    window.render = function(res){
+      _render2(res);
+      try{
+        const hexDesc = document.getElementById('hexDesc');
+        if(res && res.base && hexDesc){
+          hexDesc.textContent = buildLongDesc(res.base);
+        }
+      }catch(e){}
+    }
+  }
+})();
+
+</script>
+
+<script>
+/* ===== LONG DESCRIPTION FOR FINAL RESULT (CLEAN) ===== */
+(function(){
+  function buildLongDesc(base){
+    if(!base) return '';
+    return (
+      "El símbolo de \"" + (base.name || "") + "\" señala una etapa que pide conciencia, lectura fina del contexto y coherencia interior. " +
+      "Este momento no exige una acción inmediata ni impulsiva, sino una observación atenta de los movimientos que ya están en curso. " +
+      "Hay fuerzas visibles y otras más sutiles actuando al mismo tiempo, y comprender su interacción es clave para no forzar el proceso. " +
+      "Al reconocer qué aspectos dependen de vos y cuáles requieren espera, la situación comienza a ordenarse por sí sola. " +
+      "La claridad aparece cuando respetás el ritmo natural de los acontecimientos, permitiendo que cada paso se revele a su debido tiempo. " +
+      "Desde esa comprensión, tus decisiones ganan solidez y sabiduría."
+    );
+  }
+
+  const _renderFinal = window.render;
+  if(typeof _renderFinal === 'function'){
+    window.render = function(res){
+      _renderFinal(res);
+      try{
+        const hexDesc = document.getElementById('hexDesc');
+        if(res && res.base && hexDesc){
+          hexDesc.textContent = buildLongDesc(res.base);
+        }
+      }catch(e){}
+    }
+  }
+})();
+</script>
 
 </body>
 
